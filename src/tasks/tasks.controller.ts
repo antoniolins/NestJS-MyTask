@@ -35,18 +35,15 @@ export class TasksController {
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() task: TaskDto,
-  ): Promise<Task> {
+  update(@Param('id', ParseIntPipe) id, @Body() task: TaskDto): Promise<Task> {
     return this.taskService.update(id, task).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Task> {
-    return this.taskService.remove(+id).catch((e) => {
+  remove(@Param('id', ParseIntPipe) id): Promise<Task> {
+    return this.taskService.remove(id).catch((e) => {
       throw new NotFoundException(e.message);
     });
   }
