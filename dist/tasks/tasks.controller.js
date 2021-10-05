@@ -14,8 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TasksController = void 0;
 const common_1 = require("@nestjs/common");
-const task_service_1 = require("./shared/task.service");
+const common_2 = require("@nestjs/common");
 const TaskDto_1 = require("./shared/TaskDto");
+const task_service_1 = require("./shared/task.service");
 let TasksController = class TasksController {
     constructor(taskService) {
         this.taskService = taskService;
@@ -24,22 +25,16 @@ let TasksController = class TasksController {
         return this.taskService.getAll();
     }
     async getById(id) {
-        return this.taskService.getById(+id).catch((e) => {
-            throw new common_1.NotFoundException(e.message);
-        });
+        return this.taskService.getById(id);
     }
     async create(task) {
         return this.taskService.create(task);
     }
     update(id, task) {
-        return this.taskService.update(id, task).catch((e) => {
-            throw new common_1.NotFoundException(e.message);
-        });
+        return this.taskService.update(id, task);
     }
-    async remove(id) {
-        return this.taskService.remove(+id).catch((e) => {
-            throw new common_1.NotFoundException(e.message);
-        });
+    remove(id) {
+        return this.taskService.remove(id);
     }
 };
 __decorate([
@@ -49,10 +44,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "getAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('/:id'),
+    __param(0, (0, common_1.Param)('id', common_2.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "getById", null);
 __decorate([
@@ -63,18 +58,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "create", null);
 __decorate([
-    (0, common_1.Put)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id', common_2.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, TaskDto_1.TaskDto]),
+    __metadata("design:paramtypes", [Number, TaskDto_1.UpdateTaskDto]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_2.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "remove", null);
 TasksController = __decorate([

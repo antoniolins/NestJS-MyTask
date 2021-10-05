@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 // import { Task } from './task';
 import { PrismaService } from 'src/prisma.service';
-import { TaskDto } from './TaskDto';
+import { TaskDto, UpdateTaskDto } from './TaskDto';
 
 @Injectable()
 export class TaskService {
@@ -17,8 +17,7 @@ export class TaskService {
       where: { id },
     });
     if (!task) {
-      console.log('entrei aqui');
-      throw Error(`Task ID ${id} not found ! `);
+      throw new NotFoundException(`Task ID ${id} not found ! `);
     }
 
     return task;
@@ -29,12 +28,12 @@ export class TaskService {
     return task;
   }
 
-  async update(id: number, data: TaskDto) {
+  async update(id: number, data: UpdateTaskDto) {
     const task = await this.prisma.task.findUnique({
       where: { id },
     });
     if (!task) {
-      throw Error(`Task ID ${id} not found ! `);
+      throw new NotFoundException(`Can't Update - Task ID ${id} not found ! `);
     }
     const tasku = await this.prisma.task.update({
       where: { id: id },
@@ -47,7 +46,7 @@ export class TaskService {
       where: { id },
     });
     if (!task) {
-      throw Error(`Task ID ${id} not found ! `);
+      throw new NotFoundException(`Can't Remove - Task ID ${id} not found ! `);
     }
     const taskr = await this.prisma.task.delete({
       where: { id },

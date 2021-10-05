@@ -9,7 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskDto = void 0;
+exports.UpdateTaskDto = exports.getByIdParams = exports.TaskDto = void 0;
+const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 class TaskDto {
 }
@@ -23,4 +24,14 @@ __decorate([
     __metadata("design:type", Boolean)
 ], TaskDto.prototype, "completed", void 0);
 exports.TaskDto = TaskDto;
+class getByIdParams {
+}
+__decorate([
+    (0, class_validator_1.IsInt)(),
+    __metadata("design:type", Number)
+], getByIdParams.prototype, "id", void 0);
+exports.getByIdParams = getByIdParams;
+class UpdateTaskDto extends (0, mapped_types_1.PartialType)(TaskDto) {
+}
+exports.UpdateTaskDto = UpdateTaskDto;
 //# sourceMappingURL=TaskDto.js.map

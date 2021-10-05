@@ -3,15 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
-  ParseIntPipe,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
 
+import { ParseIntPipe } from '@nestjs/common';
+
+import { TaskDto, UpdateTaskDto } from './shared/TaskDto';
 import { TaskService } from './shared/task.service';
-import { TaskDto } from './shared/TaskDto';
 import { Task } from '@prisma/client';
 
 @Controller('tasks')
@@ -22,29 +23,27 @@ export class TasksController {
   async getAll(): Promise<Task[]> {
     return this.taskService.getAll();
   }
-
-  @Get(':id')
-  async getById(@Param('id') id: string): Promise<Task> {
-    return this.taskService.getById(+id).catch((e) => {
-      throw new NotFoundException(e.message);
-    });
+  // @Param('id', ParseIntPipe) id: number): Promise<Task>
+  @Get('/:id')
+  async getById(@Param('id', ParseIntPipe) id: number): Promise<Task> {
+    return this.taskService.getById(id);
   }
+
   @Post()
   async create(@Body() task: TaskDto): Promise<Task> {
     return this.taskService.create(task);
   }
 
-  @Put(':id')
-  update(@Param('id', ParseIntPipe) id, @Body() task: TaskDto): Promise<Task> {
-    return this.taskService.update(id, task).catch((e) => {
-      throw new NotFoundException(e.message);
-    });
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() task: UpdateTaskDto,
+  ): Promise<Task> {
+    return this.taskService.update(id, task);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id): Promise<Task> {
-    return this.taskService.remove(id).catch((e) => {
-      throw new NotFoundException(e.message);
-    });
+  remove(@Param('id', ParseIntPipe) id: number): Promise<Task> {
+    return this.taskService.remove(id);
   }
 }

@@ -25,8 +25,7 @@ let TaskService = class TaskService {
             where: { id },
         });
         if (!task) {
-            console.log('entrei aqui');
-            throw Error(`Task ID ${id} not found ! `);
+            throw new common_1.NotFoundException(`Task ID ${id} not found ! `);
         }
         return task;
     }
@@ -39,7 +38,7 @@ let TaskService = class TaskService {
             where: { id },
         });
         if (!task) {
-            throw Error(`Task ID ${id} not found ! `);
+            throw new common_1.NotFoundException(`Can't Update - Task ID ${id} not found ! `);
         }
         const tasku = await this.prisma.task.update({
             where: { id: id },
@@ -52,7 +51,7 @@ let TaskService = class TaskService {
             where: { id },
         });
         if (!task) {
-            throw Error(`Task ID ${id} not found ! `);
+            throw new common_1.NotFoundException(`Can't Remove - Task ID ${id} not found ! `);
         }
         const taskr = await this.prisma.task.delete({
             where: { id },
