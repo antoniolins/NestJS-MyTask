@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-// import { Task } from './task';
 import { PrismaService } from 'src/prisma.service';
 import { TaskDto, UpdateTaskDto } from './TaskDto';
 
@@ -8,8 +7,7 @@ export class TaskService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll() {
-    const tasks = await this.prisma.task.findMany();
-    return tasks;
+    return await this.prisma.task.findMany();
   }
 
   async getById(id: number) {
@@ -24,33 +22,32 @@ export class TaskService {
   }
 
   async create(data: TaskDto) {
-    const task = await this.prisma.task.create({ data });
-    return task;
+    return await this.prisma.task.create({ data });
   }
 
   async update(id: number, data: UpdateTaskDto) {
-    const task = await this.prisma.task.findUnique({
+    let tasku = await this.prisma.task.findUnique({
       where: { id },
     });
-    if (!task) {
+    if (!tasku) {
       throw new NotFoundException(`Can't Update - Task ID ${id} not found ! `);
     }
-    const tasku = await this.prisma.task.update({
+    const taskup = await this.prisma.task.update({
       where: { id: id },
       data,
     });
-    return tasku;
+    return taskup;
   }
   async remove(id: number) {
-    const task = await this.prisma.task.findUnique({
+    const taskr = await this.prisma.task.findUnique({
       where: { id },
     });
-    if (!task) {
+    if (!taskr) {
       throw new NotFoundException(`Can't Remove - Task ID ${id} not found ! `);
     }
-    const taskr = await this.prisma.task.delete({
+    const taskd = await this.prisma.task.delete({
       where: { id },
     });
-    return taskr;
+    return taskd;
   }
 }

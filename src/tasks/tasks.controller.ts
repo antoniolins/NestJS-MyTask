@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 
 import { ParseIntPipe } from '@nestjs/common';

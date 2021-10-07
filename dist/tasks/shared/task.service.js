@@ -17,8 +17,7 @@ let TaskService = class TaskService {
         this.prisma = prisma;
     }
     async getAll() {
-        const tasks = await this.prisma.task.findMany();
-        return tasks;
+        return await this.prisma.task.findMany();
     }
     async getById(id) {
         const task = await this.prisma.task.findUnique({
@@ -30,33 +29,32 @@ let TaskService = class TaskService {
         return task;
     }
     async create(data) {
-        const task = await this.prisma.task.create({ data });
-        return task;
+        return await this.prisma.task.create({ data });
     }
     async update(id, data) {
-        const task = await this.prisma.task.findUnique({
+        let tasku = await this.prisma.task.findUnique({
             where: { id },
         });
-        if (!task) {
+        if (!tasku) {
             throw new common_1.NotFoundException(`Can't Update - Task ID ${id} not found ! `);
         }
-        const tasku = await this.prisma.task.update({
+        const taskup = await this.prisma.task.update({
             where: { id: id },
             data,
         });
-        return tasku;
+        return taskup;
     }
     async remove(id) {
-        const task = await this.prisma.task.findUnique({
+        const taskr = await this.prisma.task.findUnique({
             where: { id },
         });
-        if (!task) {
+        if (!taskr) {
             throw new common_1.NotFoundException(`Can't Remove - Task ID ${id} not found ! `);
         }
-        const taskr = await this.prisma.task.delete({
+        const taskd = await this.prisma.task.delete({
             where: { id },
         });
-        return taskr;
+        return taskd;
     }
 };
 TaskService = __decorate([
